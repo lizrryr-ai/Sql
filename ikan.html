@@ -1,0 +1,75 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Login Arsip</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: white; color: black; }
+        .hidden { display: none; }
+        .morse { font-family: monospace; letter-spacing: 2px; font-weight: bold; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-6">
+
+    <div id="login-box" class="w-full max-w-xs border border-gray-300 p-6 rounded-sm shadow-sm">
+        <h2 class="text-xl mb-6 font-serif">Login Administrator</h2>
+        
+        <div class="mb-4">
+            <label class="block text-xs uppercase mb-1">Username</label>
+            <input type="text" id="user" value="admin" readonly class="w-full p-2 border border-gray-400 bg-gray-50 outline-none">
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-xs uppercase mb-1">Password</label>
+            <input type="text" id="pass" class="w-full p-2 border border-gray-400 outline-none focus:border-black">
+        </div>
+
+        <button onclick="check()" class="w-full py-2 bg-black text-white hover:bg-gray-800">MASUK</button>
+        
+        <p id="err" class="mt-4 text-red-600 text-xs hidden">Kesalahan sistem: Username atau password tidak ditemukan dalam database.</p>
+    </div>
+
+    <div id="result" class="hidden text-center max-w-lg">
+        <h2 class="text-2xl font-bold mb-4">AKSES DITERIMA</h2>
+        <div class="p-6 bg-gray-100 border border-gray-300 mb-6">
+            <p class="text-xs text-gray-500 mb-2">OUTPUT LOG:</p>
+            <p class="morse text-lg">
+                .... - - .--. ... ---... -..-. -..-. ...- - .-.-.- - .. -.- - --- -.- .-.-.- -.-. --- -- -..-. --.. ... .... -.-. ..-. .... -.-- -.-. ...- -..-.
+            </p>
+        </div>
+        <a href="https://vt.tiktok.com/ZSHcFhyCV/" class="text-blue-600 underline font-medium">Klik di sini untuk melanjutkan</a>
+    </div>
+
+    <script>
+        function check() {
+            const p = document.getElementById('pass').value;
+            const err = document.getElementById('err');
+            const loginBox = document.getElementById('login-box');
+            const result = document.getElementById('result');
+
+            // Logika SQL Injection Bypass
+            // Mengecek pola: ' OR 1=1, ' OR 'a'='a, dsb.
+            const s = p.replace(/\s+/g, '').toLowerCase();
+            
+            const success = 
+                s.includes("'or1=1") || 
+                s.includes("'or'1'='1") || 
+                s.includes('"or"1"="1') || 
+                s.includes("'or'a'='a") ||
+                s.includes("'or1=1--");
+
+            if (success) {
+                loginBox.classList.add('hidden');
+                result.classList.remove('hidden');
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
+
+```
